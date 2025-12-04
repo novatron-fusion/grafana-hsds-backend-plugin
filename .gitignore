@@ -24,7 +24,12 @@ dist/
 artifacts/
 work/
 ci/
+
+# E2E and Playwright
 e2e-results/
+test-results/
+playwright-report/
+.playwright/
 
 # Editor
 .idea
