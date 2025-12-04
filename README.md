@@ -38,16 +38,10 @@ A backend plugin consists of both frontend and backend components.
    yarn install
    ```
 
-2. Build plugin in development mode or run in watch mode
+2. Build and watch plugin in development mode
 
    ```bash
    yarn dev
-   ```
-
-   or
-
-   ```bash
-   yarn watch
    ```
 
 3. Build plugin in production mode
