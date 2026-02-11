@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../h5web"
+		},
+		{
+			"path": "../hsds-client-rs"
+		}
+	],
+	"settings": {}
+}

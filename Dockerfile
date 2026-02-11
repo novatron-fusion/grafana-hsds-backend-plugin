@@ -1,4 +1,4 @@
-FROM rust:1.82-alpine
+FROM rust:1.83-alpine
 
 WORKDIR /usr/src/backend
 

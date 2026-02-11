@@ -1,7 +1,7 @@
 services:
   grafana:
     user: root
-    container_name: 'grafana-sample-backend-plugin-rust'
+    container_name: 'grafana-hsds-datasource'
 
     build:
       context: .
@@ -19,13 +19,13 @@ services:
     cap_add:
       - SYS_PTRACE
     volumes:
-      - ../dist:/var/lib/grafana/plugins/grafana-sample-backend-plugin-rust
+      - ../dist:/var/lib/grafana/plugins/grafana-hsds-datasource
       - ../provisioning:/etc/grafana/provisioning
-      - ..:/root/grafana-sample-backend-plugin-rust
+      - ..:/root/grafana-hsds-datasource
 
     environment:
       NODE_ENV: development
-      GF_LOG_FILTERS: plugin.grafana-sample-backend-plugin-rust:debug
+      GF_LOG_FILTERS: plugin.grafana-hsds-datasource:debug
       GF_LOG_LEVEL: debug
       GF_DATAPROXY_LOGGING: 1
-      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: grafana-sample-backend-plugin-rust
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: grafana-hsds-datasource

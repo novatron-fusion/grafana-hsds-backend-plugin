@@ -1,16 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-  "name": "sample-backend-plugin-rust",
-  "id": "grafana-sample-backend-plugin-rust",
+  "name": "HSDS",
+  "id": "grafana-hsds-datasource",
   "metrics": true,
   "backend": true,
-  "executable": "gpx_sample-backend-plugin-rust",
+  "executable": "gpx_hsds-datasource",
   "info": {
-    "description": "Sample backend plugin written in Rust",
+    "description": "HSDS (Highly Scalable Data Service) datasource plugin",
     "author": {
-      "name": "Ben Sully",
-      "url": "grafana.com"
+      "name": "Jonathan Graesser",
+      "url": "https://novatronfusion.com"
     },
     "keywords": [
       "rust",
@@ -23,11 +23,11 @@
     "links": [
       {
         "name": "Website",
-        "url": "https://github.com/grafana/grafana-starter-datasource-backend"
+        "url": "https://novatronfusion.com"
       },
       {
         "name": "License",
-        "url": "https://github.com/grafana/grafana-starter-datasource-backend/blob/master/LICENSE"
+        "url": "https://novatronfusion.com/LICENSE"
       }
     ],
     "screenshots": [],

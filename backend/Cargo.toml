@@ -1,5 +1,5 @@
 [package]
-name = "grafana-sample-backend-plugin-rust"
+name = "grafana-hsds-datasource"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,8 +11,11 @@ chrono = "0.4.19"
 grafana-plugin-sdk = "0.5.0"
 futures = "0.3.17"
 http = "1.2.0"
+hsds_client = { path = "../hsds-client-rs" }
 serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0"
 thiserror = "2.0.12"
 tokio-stream = "0.1.8"
 tracing = "0.1.29"
 tokio = { version = "1.18.5", features = ["rt"] }
+url = "2.5"
