@@ -1,83 +1,81 @@
-import React, { ChangeEvent, PureComponent } from 'react';
-import { LegacyForms } from '@grafana/ui';
+import React, { ChangeEvent } from 'react';
+import { InlineField, Input, SecretInput, FieldSet } from '@grafana/ui';
 import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
-import { MyDataSourceOptions, MySecureJsonData } from './types';
+import { HsdsDataSourceOptions, HsdsSecureJsonData } from './types';
 
-const { SecretFormField, FormField } = LegacyForms;
+interface Props extends DataSourcePluginOptionsEditorProps<HsdsDataSourceOptions, HsdsSecureJsonData> {}
 
-interface Props extends DataSourcePluginOptionsEditorProps<MyDataSourceOptions> {}
+export function ConfigEditor(props: Props) {
+  const { onOptionsChange, options } = props;
+  const { jsonData, secureJsonFields, secureJsonData } = options;
 
-interface State {}
-
-export class ConfigEditor extends PureComponent<Props, State> {
-  onPathChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { onOptionsChange, options } = this.props;
-    const jsonData = {
-      ...options.jsonData,
-      path: event.target.value,
-    };
-    onOptionsChange({ ...options, jsonData });
-  };
-
-  // Secure field (only sent to the backend)
-  onAPIKeyChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { onOptionsChange, options } = this.props;
+  const onJsonDataChange = (key: keyof HsdsDataSourceOptions) => (event: ChangeEvent<HTMLInputElement>) => {
     onOptionsChange({
       ...options,
-      secureJsonData: {
-        apiKey: event.target.value,
-      },
+      jsonData: { ...jsonData, [key]: event.target.value },
     });
   };
 
-  onResetAPIKey = () => {
-    const { onOptionsChange, options } = this.props;
+  const onSecureChange = (key: keyof HsdsSecureJsonData) => (event: ChangeEvent<HTMLInputElement>) => {
     onOptionsChange({
       ...options,
-      secureJsonFields: {
-        ...options.secureJsonFields,
-        apiKey: false,
-      },
-      secureJsonData: {
-        ...options.secureJsonData,
-        apiKey: '',
-      },
+      secureJsonData: { ...secureJsonData, [key]: event.target.value },
     });
   };
 
-  render() {
-    const { options } = this.props;
-    const { jsonData, secureJsonFields } = options;
-    const secureJsonData = (options.secureJsonData || {}) as MySecureJsonData;
+  const onSecureReset = (key: keyof HsdsSecureJsonData) => () => {
+    onOptionsChange({
+      ...options,
+      secureJsonFields: { ...secureJsonFields, [key]: false },
+      secureJsonData: { ...secureJsonData, [key]: '' },
+    });
+  };
 
-    return (
-      <div className="gf-form-group">
-        <div className="gf-form">
-          <FormField
-            label="Path"
-            labelWidth={6}
-            inputWidth={20}
-            onChange={this.onPathChange}
-            value={jsonData.path || ''}
-            placeholder="json field returned to frontend"
+  return (
+    <>
+      <FieldSet label="Connection">
+        <InlineField label="HSDS URL" labelWidth={20} tooltip="Base URL of the HSDS server">
+          <Input
+            width={40}
+            value={jsonData.hsdsUrl || ''}
+            onChange={onJsonDataChange('hsdsUrl')}
+            placeholder="http://hsds-server:5101"
           />
-        </div>
+        </InlineField>
 
-        <div className="gf-form-inline">
-          <div className="gf-form">
-            <SecretFormField
-              isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
-              value={secureJsonData.apiKey || ''}
-              label="API Key"
-              placeholder="secure json field (backend only)"
-              labelWidth={6}
-              inputWidth={20}
-              onReset={this.onResetAPIKey}
-              onChange={this.onAPIKeyChange}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
+        <InlineField label="Default Domain" labelWidth={20} tooltip="Default HDF5 domain path to browse">
+          <Input
+            width={40}
+            value={jsonData.domain || ''}
+            onChange={onJsonDataChange('domain')}
+            placeholder="/NovaDB/Shots/S-N1-02139.h5"
+          />
+        </InlineField>
+      </FieldSet>
+
+      <FieldSet label="Authentication">
+        <InlineField label="Username" labelWidth={20}>
+          <SecretInput
+            width={40}
+            isConfigured={!!secureJsonFields?.username}
+            value={secureJsonData?.username || ''}
+            onChange={onSecureChange('username')}
+            onReset={onSecureReset('username')}
+            placeholder="HSDS username"
+          />
+        </InlineField>
+
+        <InlineField label="Password" labelWidth={20}>
+          <SecretInput
+            width={40}
+            isConfigured={!!secureJsonFields?.password}
+            value={secureJsonData?.password || ''}
+            onChange={onSecureChange('password')}
+            onReset={onSecureReset('password')}
+            placeholder="HSDS password"
+          />
+        </InlineField>
+      </FieldSet>
+    </>
+  );
 }
